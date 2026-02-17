@@ -1,0 +1,15 @@
+Earned Value (EV) = SUMX(ProjectTasks, ProjectTasks[PercentComplete] * ProjectTasks[Cost] / 100)
+
+Schedule Performance Index (SPI) = DIVIDE([Earned Value (EV)], [Planned Value (PV)])
+
+Cost Performance Index (CPI) = DIVIDE([Earned Value (EV)], SUM(ProjectTasks[Cost]))
+
+Risk-Adjusted Completion = 
+VAR MonteCarloFactor = 1.15   // from Python simulation
+RETURN MAX(ProjectTasks[EndDate]) * MonteCarloFactor
+
+Resource Utilization % = 
+DIVIDE(
+    SUMX(ProjectTasks, ProjectTasks[Duration] * 8),
+    CALCULATE(SUM(ProjectTasks[MaxAvailability]) * DISTINCTCOUNT(ProjectTasks[AssignedResource]) * 20)
+)
